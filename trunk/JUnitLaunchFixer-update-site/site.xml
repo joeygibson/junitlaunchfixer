@@ -8,7 +8,7 @@
    </feature>
    <category-def name="junitlaunchfixer" label="JUnit Launch Fixer">
       <description>
-         A plugin to automatically updat e the max heap setting for JUnit launches
+         A plugin to automatically update the max heap setting for JUnit launches
       </description>
    </category-def>
 </site>
