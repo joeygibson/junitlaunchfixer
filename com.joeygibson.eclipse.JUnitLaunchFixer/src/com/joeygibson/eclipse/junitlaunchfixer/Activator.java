@@ -25,7 +25,7 @@ public class Activator
 	extends AbstractUIPlugin
 {
 	// The plug-in ID
-	public static final String PLUGIN_ID = "com.spectrumk12.minerva.JUnitLaunchFixer";
+	public static final String PLUGIN_ID = "com.joeygibson.eclipse.junitlaunchfixer";
 
 	// The shared instance
 	private static Activator plugin;
