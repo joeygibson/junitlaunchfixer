@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/com.joeygibson.eclipse.JUnitLaunchFixer.feature_1.0.0.jar" id="com.joeygibson.eclipse.JUnitLaunchFixer.feature" version="1.0.0">
+      <category name="junitlaunchfixer"/>
+   </feature>
+   <category-def name="junitlaunchfixer" label="JUnit Launch Fixer">
+      <description>
+         A plugin to automatically updat e the max heap setting for JUnit launches
+      </description>
+   </category-def>
+</site>
