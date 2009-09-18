@@ -9,11 +9,15 @@
 package com.joeygibson.eclipse.junitlaunchfixer;
 
 import org.eclipse.debug.core.DebugPlugin;
+import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationListener;
 import org.eclipse.debug.core.ILaunchManager;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
+
+import com.joeygibson.eclipse.junitlaunchfixer.preferences.PreferenceConstants;
 /**
  * The activator class controls the plug-in life cycle
  */
@@ -26,7 +30,7 @@ public class Activator
 	// The shared instance
 	private static Activator plugin;
 
-	private ILaunchConfigurationListener launchConfigurationListener = new MinervaLaunchConfigurationListener();;
+	private ILaunchConfigurationListener launchConfigurationListener = new LaunchConfigurationListener();;
 	
 	private ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
 	
@@ -51,6 +55,20 @@ public class Activator
 		plugin = this;
 		
 		launchManager.addLaunchConfigurationListener(launchConfigurationListener);
+		
+		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
+		
+		if (store.getBoolean(PreferenceConstants.P_UPDATE_EXISTING_LAUNCHERS))
+		{		
+			ILaunchConfiguration[] launchers = launchManager.getLaunchConfigurations();
+			
+			for (ILaunchConfiguration config : launchers)
+			{
+				LaunchProcessor.processVmArgs(config);
+			}
+			
+			store.setValue(PreferenceConstants.P_UPDATE_EXISTING_LAUNCHERS, false);
+		}		
 	}
 
 	/*
