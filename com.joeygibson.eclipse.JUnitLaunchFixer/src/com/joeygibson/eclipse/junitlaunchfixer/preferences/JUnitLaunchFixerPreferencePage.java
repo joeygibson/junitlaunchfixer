@@ -44,7 +44,7 @@ public class JUnitLaunchFixerPreferencePage
 	public void createFieldEditors()
 	{
 		addField(new StringFieldEditor(PreferenceConstants.P_MAX_HEAP, "&Max Heap Size:", getFieldEditorParent()));
-		addField(new BooleanFieldEditor(PreferenceConstants.P_UPDATE_EXISTING_LAUNCHERS, "&Update Existing Launchers?",
+		addField(new BooleanFieldEditor(PreferenceConstants.P_UPDATE_EXISTING_LAUNCHERS, "&Update Existing Launchers On Next Restart?",
 				getFieldEditorParent()));
 	}
 

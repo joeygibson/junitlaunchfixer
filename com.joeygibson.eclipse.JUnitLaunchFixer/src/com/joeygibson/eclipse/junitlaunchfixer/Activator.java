@@ -4,20 +4,26 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *******************************************************************************/ 
+ *******************************************************************************/
 
 package com.joeygibson.eclipse.junitlaunchfixer;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationListener;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
 import com.joeygibson.eclipse.junitlaunchfixer.preferences.PreferenceConstants;
+
+
 /**
  * The activator class controls the plug-in life cycle
  */
@@ -31,9 +37,9 @@ public class Activator
 	private static Activator plugin;
 
 	private ILaunchConfigurationListener launchConfigurationListener = new LaunchConfigurationListener();;
-	
+
 	private ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
-	
+
 	/**
 	 * The constructor
 	 */
@@ -53,22 +59,67 @@ public class Activator
 	{
 		super.start(context);
 		plugin = this;
-		
+
 		launchManager.addLaunchConfigurationListener(launchConfigurationListener);
-		
-		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-		
+
+		final IPreferenceStore store = Activator.getDefault().getPreferenceStore();
+
 		if (store.getBoolean(PreferenceConstants.P_UPDATE_EXISTING_LAUNCHERS))
-		{		
-			ILaunchConfiguration[] launchers = launchManager.getLaunchConfigurations();
-			
-			for (ILaunchConfiguration config : launchers)
+		{
+			Runnable r = new Runnable()
 			{
-				LaunchProcessor.processVmArgs(config);
-			}
-			
+				@Override
+				public void run()
+				{
+					Shell shell = PlatformUI.getWorkbench().getDisplay().getActiveShell();
+
+					ILaunchConfiguration[] launchers = null;
+
+					try
+					{
+						launchers = launchManager.getLaunchConfigurations();
+						
+						if (launchers == null || launchers.length == 0)
+						{
+							return;
+						}
+					}
+					catch (CoreException e)
+					{
+						e.printStackTrace();
+					}
+
+					LauncherSelectionDialog dlg = new LauncherSelectionDialog(shell, launchers,
+							new ArrayContentProvider(), new LaunchLabelProvider(), "Select launchers to update");
+
+					dlg.setHeapSize(store.getString(PreferenceConstants.P_MAX_HEAP));
+					dlg.open();
+
+					String heapSize = dlg.getHeapSize();
+
+					if (heapSize != null && heapSize.length() > 0)
+					{
+						store.setValue(PreferenceConstants.P_MAX_HEAP, heapSize);
+
+						Object[] res = dlg.getResult();
+
+						if (res != null)
+						{
+							for (Object o : res)
+							{
+								ILaunchConfiguration config = (ILaunchConfiguration) o;
+
+								LaunchProcessor.processVmArgs(config);
+							}
+						}
+					}
+				}
+			};
+
+			PlatformUI.getWorkbench().getDisplay().syncExec(r);
+
 			store.setValue(PreferenceConstants.P_UPDATE_EXISTING_LAUNCHERS, false);
-		}		
+		}
 	}
 
 	/*
@@ -83,7 +134,7 @@ public class Activator
 	{
 		plugin = null;
 		super.stop(context);
-		
+
 		launchManager.removeLaunchConfigurationListener(launchConfigurationListener);
 	}
 
