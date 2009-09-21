@@ -8,6 +8,8 @@
 
 package com.joeygibson.eclipse.junitlaunchfixer;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -25,6 +27,32 @@ public class LaunchProcessor
 	private static final String VMARGS_KEY = "org.eclipse.jdt.launching.VM_ARGUMENTS";
 
 	private static final String TEST_KIND_KEY = "org.eclipse.jdt.junit.TEST_KIND";
+	
+	public static List<ILaunchConfiguration> filterNonJUnitLaunchers(ILaunchConfiguration[] configs)
+	{
+		List<ILaunchConfiguration> goodConfigs = new ArrayList<ILaunchConfiguration>();
+		
+		for (ILaunchConfiguration config : configs)
+		{
+			try
+			{
+				String testKind = config.getAttribute(TEST_KIND_KEY, "");
+System.out.printf("Config: %s\n", config.getName());
+System.out.printf("TestKi: %s\n", testKind);
+				if (testKind != null && testKind.length() > 0 && testKind.contains("junit"))
+				{
+					System.out.printf("Adding");
+					goodConfigs.add(config);
+				}
+			}
+			catch (CoreException e)
+			{
+				e.printStackTrace();
+			}
+		}
+		
+		return goodConfigs;
+	}
 	
 	public static void processVmArgs(ILaunchConfiguration config)
 	{
