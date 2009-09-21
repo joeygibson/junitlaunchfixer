@@ -8,6 +8,8 @@
 
 package com.joeygibson.eclipse.junitlaunchfixer;
 
+import java.util.List;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -89,7 +91,15 @@ public class Activator
 						e.printStackTrace();
 					}
 
-					LauncherSelectionDialog dlg = new LauncherSelectionDialog(shell, launchers,
+					List<ILaunchConfiguration> filteredLaunchers = LaunchProcessor.filterNonJUnitLaunchers(launchers);
+					
+					if (filteredLaunchers.size() == 0)
+					{
+						return;
+					}
+					
+					System.out.printf("Launchers length: %d\n", filteredLaunchers.size());
+					LauncherSelectionDialog dlg = new LauncherSelectionDialog(shell, filteredLaunchers,
 							new ArrayContentProvider(), new LaunchLabelProvider(), "Select launchers to update");
 
 					dlg.setHeapSize(store.getString(PreferenceConstants.P_MAX_HEAP));
