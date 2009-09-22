@@ -37,11 +37,9 @@ public class LaunchProcessor
 			try
 			{
 				String testKind = config.getAttribute(TEST_KIND_KEY, "");
-System.out.printf("Config: %s\n", config.getName());
-System.out.printf("TestKi: %s\n", testKind);
+
 				if (testKind != null && testKind.length() > 0 && testKind.contains("junit"))
 				{
-					System.out.printf("Adding");
 					goodConfigs.add(config);
 				}
 			}
