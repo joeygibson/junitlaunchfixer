@@ -27,7 +27,13 @@ public class LaunchProcessor
 	private static final String VMARGS_KEY = "org.eclipse.jdt.launching.VM_ARGUMENTS";
 
 	private static final String TEST_KIND_KEY = "org.eclipse.jdt.junit.TEST_KIND";
+
+	private static final String FAVORITE_GROUPS_KEY = "org.eclipse.debug.ui.favoriteGroups";
 	
+	private static final String RUN_GROUP_KEY = "org.eclipse.debug.ui.launchGroup.run";
+	
+	private static final String DEBUG_GROUP_KEY = "org.eclipse.debug.ui.launchGroup.debug";
+
 	public static List<ILaunchConfiguration> filterNonJUnitLaunchers(ILaunchConfiguration[] configs)
 	{
 		List<ILaunchConfiguration> goodConfigs = new ArrayList<ILaunchConfiguration>();
@@ -83,6 +89,13 @@ public class LaunchProcessor
 			ILaunchConfigurationWorkingCopy wc = config.getWorkingCopy();
 
 			wc.setAttribute(VMARGS_KEY, vmArgs);
+			
+			// Ensure it still shows up in the dropdowns
+			List<String> favorites = new ArrayList<String>();
+			favorites.add(RUN_GROUP_KEY);
+			favorites.add(DEBUG_GROUP_KEY);
+			wc.setAttribute(FAVORITE_GROUPS_KEY, favorites);
+
 			wc.doSave();
 		}
 		catch (CoreException e)
