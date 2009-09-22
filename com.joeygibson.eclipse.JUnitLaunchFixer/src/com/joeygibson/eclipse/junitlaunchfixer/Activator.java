@@ -98,7 +98,6 @@ public class Activator
 						return;
 					}
 					
-					System.out.printf("Launchers length: %d\n", filteredLaunchers.size());
 					LauncherSelectionDialog dlg = new LauncherSelectionDialog(shell, filteredLaunchers,
 							new ArrayContentProvider(), new LaunchLabelProvider(), "Select launchers to update");
 
