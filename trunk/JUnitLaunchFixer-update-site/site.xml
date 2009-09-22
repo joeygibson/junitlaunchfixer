@@ -3,7 +3,7 @@
    <description url="http://junitlaunchfixer.googlecode.com/svn/trunk/JUnitLaunchFixer-update-site/">
       A plugin to automatically set the max heap size for JUnit Launches.
    </description>
-   <feature url="features/com.joeygibson.eclipse.JUnitLaunchFixer.feature_1.0.2.jar" id="com.joeygibson.eclipse.JUnitLaunchFixer.feature" version="1.0.2">
+   <feature url="features/com.joeygibson.eclipse.JUnitLaunchFixer.feature_1.0.3.jar" id="com.joeygibson.eclipse.JUnitLaunchFixer.feature" version="1.0.3">
       <category name="junitlaunchfixer"/>
    </feature>
    <category-def name="junitlaunchfixer" label="JUnit Launch Fixer">
