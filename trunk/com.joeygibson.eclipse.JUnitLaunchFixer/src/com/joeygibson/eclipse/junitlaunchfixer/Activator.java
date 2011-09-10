@@ -102,14 +102,19 @@ public class Activator
 							new ArrayContentProvider(), new LaunchLabelProvider(), "Select launchers to update");
 
 					dlg.setHeapSize(store.getString(PreferenceConstants.P_MAX_HEAP));
+					dlg.setMaxPermSize(store.getString(PreferenceConstants.P_MAX_PERM_SIZE));
+					
 					dlg.open();
 
 					String heapSize = dlg.getHeapSize();
-
-					if (heapSize != null && heapSize.length() > 0)
+					String maxPermSize = dlg.getMaxPermSize();
+					
+					if (heapSize != null && heapSize.length() > 0 &&
+						maxPermSize != null && maxPermSize.length() > 0)
 					{
 						store.setValue(PreferenceConstants.P_MAX_HEAP, heapSize);
-
+						store.setValue(PreferenceConstants.P_MAX_PERM_SIZE, maxPermSize);
+						
 						Object[] res = dlg.getResult();
 
 						if (res != null)
@@ -121,7 +126,7 @@ public class Activator
 								LaunchProcessor.processVmArgs(config);
 							}
 						}
-					}
+					}					
 				}
 			};
 

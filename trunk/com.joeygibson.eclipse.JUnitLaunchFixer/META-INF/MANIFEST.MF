@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: JUnitLaunchFixer Plug-in
 Bundle-SymbolicName: com.joeygibson.eclipse.JUnitLaunchFixer;singleton:=true
-Bundle-Version: 1.0.2
+Bundle-Version: 1.0.4
 Bundle-Activator: com.joeygibson.eclipse.junitlaunchfixer.Activator
 Bundle-Vendor: joeygibson.com
 Require-Bundle: org.eclipse.ui,

@@ -2,7 +2,7 @@
 <feature
       id="com.joeygibson.eclipse.JUnitLaunchFixer.feature"
       label="JUnit Launch Fixer"
-      version="1.0.2">
+      version="1.0.4">
 
    <description url="http://www.example.com/description">
       [Enter Feature Description here.]
@@ -106,7 +106,7 @@ This Agreement is governed by the laws of the State of New York and the intellec
          id="com.joeygibson.eclipse.JUnitLaunchFixer"
          download-size="0"
          install-size="0"
-         version="1.0.2"
+         version="0.0.0"
          unpack="false"/>
 
 </feature>

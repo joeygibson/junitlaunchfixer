@@ -28,7 +28,9 @@ public class PreferenceInitializer
 	public void initializeDefaultPreferences()
 	{
 		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
+		
 		store.setDefault(PreferenceConstants.P_UPDATE_EXISTING_LAUNCHERS, true);
 		store.setDefault(PreferenceConstants.P_MAX_HEAP, "1G");
+		store.setDefault(PreferenceConstants.P_MAX_PERM_SIZE, "128M");
 	}
 }

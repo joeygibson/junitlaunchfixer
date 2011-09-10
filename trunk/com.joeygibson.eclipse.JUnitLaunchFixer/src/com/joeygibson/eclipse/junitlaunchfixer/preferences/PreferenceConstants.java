@@ -14,6 +14,8 @@ package com.joeygibson.eclipse.junitlaunchfixer.preferences;
 public class PreferenceConstants
 {
 	public static final String P_MAX_HEAP = "maxHeap";
+	
+	public static final String P_MAX_PERM_SIZE = "maxPermSize";
 
 	public static final String P_UPDATE_EXISTING_LAUNCHERS = "override";
 }
