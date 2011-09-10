@@ -24,8 +24,12 @@ public class LauncherSelectionDialog
 	extends ListSelectionDialog
 {
 	private String heapSize;
+	
+	private String maxPermSize;
 
-	private Text text;
+	private Text maxHeapSpaceText;
+	
+	private Text maxPermSizeText;
 
 	public LauncherSelectionDialog(Shell parentShell, Object input, IStructuredContentProvider contentProvider,
 			ILabelProvider labelProvider, String message)
@@ -45,12 +49,13 @@ public class LauncherSelectionDialog
 		
 		child.setLayout(layout);
 
+		// Max Heap Space
 		new Label(child, SWT.NONE).setText("Max Heap Size:");
-		text = new Text(child, SWT.SINGLE | SWT.BORDER);
+		maxHeapSpaceText = new Text(child, SWT.SINGLE | SWT.BORDER);
 		
-		text.setText(heapSize);
+		maxHeapSpaceText.setText(heapSize);
 		
-		text.addVerifyListener(new VerifyListener()
+		maxHeapSpaceText.addVerifyListener(new VerifyListener()
 		{
 			@Override
 			public void verifyText(VerifyEvent event)
@@ -59,7 +64,35 @@ public class LauncherSelectionDialog
 
 				char myChar = event.character;
 
-//				String text = ((Text) event.widget).getText();
+				// Allow 0-9
+				if (Character.isDigit(myChar) || myChar == 'm' || myChar == 'M' ||
+						myChar == 'g' || myChar == 'G')
+				{
+					event.doit = true;
+				}
+				
+				// Allow backspace
+				if (myChar == '\b')
+				{
+					event.doit = true;
+				}
+			}
+		});
+		
+		// Max Perm Size
+		new Label(child, SWT.NONE).setText("Max PermGen Size:");
+		maxPermSizeText = new Text(child, SWT.SINGLE | SWT.BORDER);
+		
+		maxPermSizeText.setText(maxPermSize);
+		
+		maxPermSizeText.addVerifyListener(new VerifyListener()
+		{
+			@Override
+			public void verifyText(VerifyEvent event)
+			{
+				event.doit = false;
+
+				char myChar = event.character;
 
 				// Allow 0-9
 				if (Character.isDigit(myChar) || myChar == 'm' || myChar == 'M' ||
@@ -92,8 +125,19 @@ public class LauncherSelectionDialog
 	@Override
 	protected void okPressed()
 	{
+		heapSize = maxHeapSpaceText.getText();
+		maxPermSize = maxPermSizeText.getText();
+		
 		super.okPressed();
+	}
 
-		heapSize = text.getText();
+	public String getMaxPermSize()
+	{
+		return maxPermSize;
+	}
+
+	public void setMaxPermSize(String maxPermSize)
+	{
+		this.maxPermSize = maxPermSize;
 	}
 }

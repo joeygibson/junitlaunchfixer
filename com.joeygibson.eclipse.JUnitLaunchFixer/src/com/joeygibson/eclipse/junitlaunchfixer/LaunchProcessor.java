@@ -22,7 +22,9 @@ import com.joeygibson.eclipse.junitlaunchfixer.preferences.PreferenceConstants;
 
 public class LaunchProcessor 
 {
-	protected static Pattern pattern = Pattern.compile("-Xmx\\d+\\w");
+	protected static Pattern maxHeapPattern = Pattern.compile("-Xmx\\d+\\w");
+	
+	protected static Pattern maxPermSizePattern = Pattern.compile("-XX:MaxPermSize=\\d+\\w");
 
 	private static final String VMARGS_KEY = "org.eclipse.jdt.launching.VM_ARGUMENTS";
 
@@ -63,7 +65,11 @@ public class LaunchProcessor
 		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
 
 		String maxHeap = store.getString(PreferenceConstants.P_MAX_HEAP);
-
+		String maxPermSize = store.getString(PreferenceConstants.P_MAX_PERM_SIZE);
+		
+		String newMaxHeap = "-Xmx" + maxHeap;
+		String newMaxPermSize = "-XX:MaxPermSize=" + maxPermSize;
+		
 		try
 		{
 			String testKind = config.getAttribute(TEST_KIND_KEY, "");
@@ -75,15 +81,26 @@ public class LaunchProcessor
 
 			String vmArgs = config.getAttribute(VMARGS_KEY, "");
 
-			Matcher matcher = pattern.matcher(vmArgs);
+			Matcher matcher = maxHeapPattern.matcher(vmArgs);
 
 			if (matcher.find())
 			{
-				vmArgs = matcher.replaceFirst("-Xmx" + maxHeap);
+				vmArgs = matcher.replaceFirst(newMaxHeap);
 			}
 			else
 			{
-				vmArgs += "-Xmx" + maxHeap;
+				vmArgs += " " + newMaxHeap;
+			}
+			
+			matcher = maxPermSizePattern.matcher(vmArgs);
+			
+			if (matcher.find())
+			{
+				vmArgs = matcher.replaceFirst(newMaxPermSize);
+			}
+			else
+			{
+				vmArgs += " " + newMaxPermSize;
 			}
 
 			ILaunchConfigurationWorkingCopy wc = config.getWorkingCopy();

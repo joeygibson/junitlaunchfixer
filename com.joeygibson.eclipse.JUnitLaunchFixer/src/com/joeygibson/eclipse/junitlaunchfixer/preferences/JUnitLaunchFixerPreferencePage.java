@@ -33,7 +33,7 @@ public class JUnitLaunchFixerPreferencePage
 	{
 		super(GRID);
 		setPreferenceStore(Activator.getDefault().getPreferenceStore());
-		setDescription("Preferences for maximum heap settings for launchers");
+		setDescription("Preferences for maximum heap and permgen settings for launchers");
 	}
 
 	/**
@@ -44,6 +44,7 @@ public class JUnitLaunchFixerPreferencePage
 	public void createFieldEditors()
 	{
 		addField(new StringFieldEditor(PreferenceConstants.P_MAX_HEAP, "&Max Heap Size:", getFieldEditorParent()));
+		addField(new StringFieldEditor(PreferenceConstants.P_MAX_PERM_SIZE, "Max &Perm Size:", getFieldEditorParent()));
 		addField(new BooleanFieldEditor(PreferenceConstants.P_UPDATE_EXISTING_LAUNCHERS, "&Update Existing Launchers On Next Restart?",
 				getFieldEditorParent()));
 	}
